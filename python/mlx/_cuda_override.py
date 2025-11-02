@@ -1,5 +1,6 @@
 # Copyright © 2023 Apple Inc.
 
+import sys
 import mlx.core as mx
 
 
@@ -37,7 +38,13 @@ def quantized_matmul_new(
     """
     # Dequantize weights using MLX's dequantization function
     w_dequant = mx.dequantize(
-        w, scales, biases, bits=bits, group_size=group_size, mode=mode, stream=stream
+        w,
+        scales,
+        biases,
+        bits=bits,
+        group_size=group_size,
+        mode=mode,
+        stream=stream,
     )
 
     x_dequant = x.astype(dtype=w_dequant.dtype, stream=stream)
@@ -128,7 +135,10 @@ def gather_qmm_new(
 
 if mx.cuda.is_available():
     for mod in sys.modules.values():
-        if hasattr(mod, "quantized_matmul") and mod.quantized_matmul is mx.quantized_matmul:
+        if (
+            hasattr(mod, "quantized_matmul")
+            and mod.quantized_matmul is mx.quantized_matmul
+        ):
             print("setting attr quantized_matmul")
             mod.quantized_matmul = quantized_matmul_new
         if hasattr(mod, "gather_qmm") and mod.gather_qmm is mx.gather_qmm:
