@@ -30,7 +30,7 @@ NO_GPU(GatherQMM)
 NO_GPU(Hadamard)
 NO_GPU_MULTI(LUF)
 NO_GPU_MULTI(QRF)
-NO_GPU(QuantizedMatmul)
+/* NO_GPU(QuantizedMatmul) -- now implemented in quantized/quantized.cpp */
 NO_GPU(SegmentedMM)
 NO_GPU_MULTI(SVD)
 NO_GPU(Inverse)
