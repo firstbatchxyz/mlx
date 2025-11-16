@@ -54,6 +54,8 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/quantized/affine_quantize.cu
           ${CMAKE_CURRENT_SOURCE_DIR}/quantized/fp_quantize.cu
           ${CMAKE_CURRENT_SOURCE_DIR}/quantized/quantized.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/quantized/quantized_kernels.cu
+          ${CMAKE_CURRENT_SOURCE_DIR}/quantized/quantized_qmm.cu
           ${CMAKE_CURRENT_SOURCE_DIR}/quantized/convert_fp8.cu
           ${CMAKE_CURRENT_SOURCE_DIR}/worker.cpp)
 
@@ -125,7 +127,8 @@ endif()
 # Compute capability >= 7.0 is required for synchronization between CPU/GPU with
 # managed memory.
 if(NOT DEFINED MLX_CUDA_ARCHITECTURES)
-  set(MLX_CUDA_ARCHITECTURES "native")
+  # Set default CUDA architectures: 70 (Volta/T4), 80 (Ampere/A100), 86 (Ampere/RTX 30xx)
+  set(MLX_CUDA_ARCHITECTURES "75")
 endif()
 message(STATUS "CUDA architectures: ${MLX_CUDA_ARCHITECTURES}")
 set_target_properties(mlx PROPERTIES CUDA_ARCHITECTURES
